@@ -1,4 +1,6 @@
 import { api } from '@/services/api';
+import { API_ENDPOINTS } from '@/constants/api';
+import type { LoginResponse, RefreshTokenResponse } from '@/types/api';
 
 export type LoginPayload = { email: string; password: string };
 
@@ -16,7 +18,7 @@ const MOCK_USER = {
   refreshToken: 'mock-refresh-token-67890'
 };
 
-export async function login(payload: LoginPayload) {
+export async function login(payload: LoginPayload): Promise<LoginResponse> {
   // Check if using mock credentials
   if (payload.email === MOCK_USER.email && payload.password === MOCK_USER.password) {
     // Simulate API delay
@@ -31,15 +33,19 @@ export async function login(payload: LoginPayload) {
 
   // If not mock credentials, try real API
   try {
-    const { data } = await api.post('/auth/login', payload);
-    return data as { token: string; refreshToken: string; user: { id: string; name: string; role?: string } };
+        const { data } = await api.post<LoginResponse>(API_ENDPOINTS.AUTH.LOGIN, payload);
+    return data;
   } catch (error) {
     // If API fails and credentials don't match mock, throw error
     throw new Error('Invalid credentials');
   }
 }
 
-export async function refreshToken() {
+export async function refreshToken(): Promise<RefreshTokenResponse> {
+  // This is a mock API call. In a real application, you would call:
+  // const { data } = await api.post(API_ENDPOINTS.AUTH.REFRESH_TOKEN);
+  // return data;
+
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
 

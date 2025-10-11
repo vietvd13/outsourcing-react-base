@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import i18n from '@/locales/i18n';
 import { store } from '@/store/store';
 import { logout, updateToken } from '@/store/authSlice';
@@ -38,6 +39,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Handle 401 Unauthorized errors with refresh token logic
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         // If already refreshing, queue this request
@@ -83,6 +85,36 @@ api.interceptors.response.use(
       } finally {
         isRefreshing = false;
       }
+    }
+
+    // Handle other HTTP errors with toast notifications
+    if (error.response) {
+      const { status, data } = error.response;
+      let errorMessage = 'Đã có lỗi xảy ra, vui lòng thử lại';
+
+      // Customize error messages based on status codes
+      switch (status) {
+        case 400:
+          errorMessage = data?.message || 'Dữ liệu không hợp lệ';
+          break;
+        case 403:
+          errorMessage = 'Bạn không có quyền thực hiện hành động này';
+          break;
+        case 404:
+          errorMessage = 'Không tìm thấy tài nguyên yêu cầu';
+          break;
+        case 500:
+          errorMessage = 'Lỗi máy chủ, vui lòng thử lại sau';
+          break;
+        default:
+          errorMessage = data?.message || errorMessage;
+      }
+
+      // Show error toast notification
+      toast.error(errorMessage);
+    } else if (error.request) {
+      // Network error
+      toast.error('Không thể kết nối đến máy chủ');
     }
 
     return Promise.reject(error);
