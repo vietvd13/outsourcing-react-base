@@ -5,10 +5,11 @@ import { Provider } from 'react-redux';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import App from './App';
-import { store } from './store';
-import { queryClient } from './queryClient';
+import { store } from '@/store/store';
+import 'antd/dist/reset.css';
+import { queryClient } from '@/query/queryClient';
 import './styles/globals.scss';
-import './i18n';
+import './locales/i18n';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

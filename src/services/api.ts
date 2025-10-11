@@ -1,8 +1,8 @@
 import axios from 'axios';
-import i18n from '@/i18n';
-import { store } from '@/store';
+import i18n from '@/locales/i18n';
+import { store } from '@/store/store';
 import { logout } from '@/store/authSlice';
-import type { RootState } from '@/store';
+import type { RootState } from '@/store/store';
 
 export const api = axios.create({ baseURL: (import.meta.env.VITE_API_URL as string) || '/api' });
 
