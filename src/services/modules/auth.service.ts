@@ -12,7 +12,8 @@ const MOCK_USER = {
     email: 'vanha@gmail.com',
     role: 'admin'
   },
-  token: 'mock-jwt-token-12345'
+  token: 'mock-jwt-token-12345',
+  refreshToken: 'mock-refresh-token-67890'
 };
 
 export async function login(payload: LoginPayload) {
@@ -23,6 +24,7 @@ export async function login(payload: LoginPayload) {
 
     return {
       token: MOCK_USER.token,
+      refreshToken: MOCK_USER.refreshToken,
       user: MOCK_USER.user
     };
   }
@@ -30,9 +32,23 @@ export async function login(payload: LoginPayload) {
   // If not mock credentials, try real API
   try {
     const { data } = await api.post('/auth/login', payload);
-    return data as { token: string; user: { id: string; name: string; role?: string } };
+    return data as { token: string; refreshToken: string; user: { id: string; name: string; role?: string } };
   } catch (error) {
     // If API fails and credentials don't match mock, throw error
     throw new Error('Invalid credentials');
   }
+}
+
+export async function refreshToken() {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+
+  // Generate new mock tokens
+  const newToken = `mock-jwt-token-${Date.now()}`;
+  const newRefreshToken = `mock-refresh-token-${Date.now()}`;
+
+  return {
+    token: newToken,
+    refreshToken: newRefreshToken
+  };
 }

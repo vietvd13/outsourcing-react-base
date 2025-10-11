@@ -20,7 +20,11 @@ export default function Login() {
 
   const onSubmit = async (values: LoginSchema) => {
     const data = await login(values);
-    dispatch(setCredentials({ token: data.token, user: data.user }));
+    dispatch(setCredentials({
+      token: data.token,
+      refreshToken: data.refreshToken,
+      user: data.user
+    }));
     navigate('/');
   };
 
