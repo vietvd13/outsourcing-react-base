@@ -4,7 +4,7 @@ import AuthLayout from '@/layouts/AuthLayout';
 import Dashboard from '@/pages/Dashboard';
 import AdminPage from '@/pages/Admin';
 import Login from '@/pages/Login';
-import Showcase from '@/pages/Showcase';
+
 import ProtectedRoute from '@/components/ProtectedRoute';
 import RoleBasedGuard from '@/components/RoleBasedGuard';
 
@@ -18,7 +18,7 @@ export function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/showcase" element={<Showcase />} />
+
           <Route element={<RoleBasedGuard allowedRoles={['admin']} />}>
             <Route path="/admin" element={<AdminPage />} />
           </Route>
