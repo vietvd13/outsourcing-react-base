@@ -10,6 +10,8 @@ i18n.use(initReactI18next).init({
   },
   lng: "vi",
   fallbackLng: "en",
+  ns: ['common'],
+  defaultNS: 'common',
   interpolation: { escapeValue: false },
 });
 
